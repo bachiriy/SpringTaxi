@@ -1,4 +1,4 @@
-package com.springtaxi.app.repository;
+package com.springtaxi.app.util;
 
 public class Configuration {
 }
