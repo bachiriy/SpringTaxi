@@ -35,7 +35,6 @@ public class Driver {
     @OneToMany
     private List<Reservation> reservations;
 
-    @OneToOne
-    private Vehicle vehicle;
+
 
 }

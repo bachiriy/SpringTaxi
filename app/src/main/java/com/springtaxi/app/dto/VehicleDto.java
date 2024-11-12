@@ -42,16 +42,15 @@ public class VehicleDto {
         vehicle.setMileage(this.mileage);
         vehicle.setStatus(this.status);
         vehicle.setType(this.type);
-/*
-        if (this.driverId != null) {
 
-            Driver driver = driverService.findById(this.driverId);
-            if (driver != null) {
-                vehicle.setDriver(driver);
-            }
+        if (this.driverId != null) {
+            Driver driver = new Driver();
+            driver.setId(this.driverId);
+            vehicle.setDriver(driver);
         }
-*/
+
         return vehicle;
     }
+
 
 }
