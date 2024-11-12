@@ -1,4 +1,7 @@
 package com.springtaxi.app.exception;
 
-public class ElementNotFoundException {
+public class ElementNotFoundException extends RuntimeException {
+    public ElementNotFoundException(String message) {
+        super(message);
+    }
 }

@@ -8,5 +8,5 @@ import com.springtaxi.app.entity.Reservation;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    
+    Reservation findByStartingAddressAndDestinationAddressAndPrice(String startingAddress, String destinationAddress, Double price); 
 }
