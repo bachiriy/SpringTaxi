@@ -20,21 +20,27 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reservation {
+public class Reservation {  
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "date_time")
-    private LocalDateTime dateTime = LocalDateTime.now();
-    
-    @Column(name = "starting_address")
-    @NotNull(message = "Starting address is required.")
-    private String startingAddress;
+    @Column(name = "reservation_date_time")
+    private LocalDateTime reservationDateTime = LocalDateTime.now();
 
-    @Column(name = "destination_address")
-    @NotNull(message = "Destination address is required.")
-    private String destinationAddress;
+    @Column(name = "trip_start_time")
+    private LocalDateTime tripStartTime;
+
+    @Column(name = "trip_end_time")
+    private LocalDateTime tripEndTime;
+
+    @Column(name = "pickup_address")
+    @NotNull(message = "Pickup address is required.")
+    private String pickupAddress;
+
+    @Column(name = "dropoff_address")
+    @NotNull(message = "Drop-off address is required.")
+    private String dropoffAddress;
 
     @NotNull(message = "Price is required.")
     private Double price;
@@ -43,8 +49,7 @@ public class Reservation {
     private Status status;
 
     @Column(name = "distance_km")
-    @NotNull(message = "Distance km is required.")
+    @NotNull(message = "Distance in kilometers is required.")
     @Max(100)
     private Double distanceKm;
 }
-
