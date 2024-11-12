@@ -1,5 +1,6 @@
 package com.springtaxi.app.dto;
 
+import com.springtaxi.app.entity.Driver;
 import com.springtaxi.app.entity.Vehicle;
 import com.springtaxi.app.entity.VehicleStatus;
 import com.springtaxi.app.entity.VehicleType;
@@ -41,6 +42,16 @@ public class VehicleDto {
         vehicle.setMileage(this.mileage);
         vehicle.setStatus(this.status);
         vehicle.setType(this.type);
+/*
+        if (this.driverId != null) {
+
+            Driver driver = driverService.findById(this.driverId);
+            if (driver != null) {
+                vehicle.setDriver(driver);
+            }
+        }
+*/
         return vehicle;
     }
+
 }
