@@ -51,12 +51,13 @@ public class ReservationService {
 
     public ResponseObj update(Reservation reservation) {
         Reservation foundReservation = getById(reservation.getId());
-        if (!reservation.getDestinationAddress().isEmpty()) foundReservation.setDestinationAddress(reservation.getDestinationAddress());
-        if (!reservation.getStartingAddress().isEmpty()) foundReservation.setStartingAddress(reservation.getStartingAddress());
-        if (reservation.getPrice() != null) foundReservation.setPrice(reservation.getPrice());
-        if (reservation.getStatus() != null) foundReservation.setStatus(reservation.getStatus());
-        if (reservation.getDistanceKm() != null) foundReservation.setDistanceKm(reservation.getDistanceKm());
+        int changes = 0;
+        if (reservation.getDestinationAddress() != null) {foundReservation.setDestinationAddress(reservation.getDestinationAddress()); changes++;}
+        if (reservation.getStartingAddress() != null) {foundReservation.setStartingAddress(reservation.getStartingAddress()); changes++;}
+        if (reservation.getPrice() != null) {foundReservation.setPrice(reservation.getPrice()); changes++;}
+        if (reservation.getStatus() != null) {foundReservation.setStatus(reservation.getStatus()); changes++;}
+        if (reservation.getDistanceKm() != null) {foundReservation.setDistanceKm(reservation.getDistanceKm()); changes++;}
         repository.save(foundReservation);
-        return new ResponseObj(HttpStatus.OK.value(), "Reservation updated.");
+        return new ResponseObj(HttpStatus.OK.value(), "Reservation updated with("+ changes+ ") changes.");
     }
 }
