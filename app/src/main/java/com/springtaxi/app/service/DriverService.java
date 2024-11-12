@@ -5,12 +5,14 @@ import com.springtaxi.app.repository.DriverRepository;
 import com.springtaxi.app.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
-public class   DriverService {
+@Transactional
+public class DriverService {
     private final DriverRepository driverRepository;
 
     @Autowired
