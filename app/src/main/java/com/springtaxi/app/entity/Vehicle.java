@@ -35,6 +35,6 @@ public class Vehicle {
     private List<Reservation> reservations;
 
     @OneToOne
-    @JoinColumn(name = "driver_id", nullable = false)
+    @JoinColumn(name = "driver_id")
     private Driver driver;
 }
