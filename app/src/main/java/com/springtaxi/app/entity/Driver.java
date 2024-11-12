@@ -1,5 +1,6 @@
 package com.springtaxi.app.entity;
 
+import com.springtaxi.app.entity.enums.DriverStatut;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
