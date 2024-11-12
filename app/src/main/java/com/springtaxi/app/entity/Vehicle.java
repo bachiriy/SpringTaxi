@@ -13,12 +13,16 @@ import javax.persistence.*;
 @Table(name = "vehicle")
 public class Vehicle {
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String model;
 
+
+    
     @Column(unique = true, nullable = false)
     private String licensePlate;
 
