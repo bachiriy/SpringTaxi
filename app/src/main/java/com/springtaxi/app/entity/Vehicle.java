@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,8 +20,6 @@ public class Vehicle {
 
     private String model;
 
-
-    
     @Column(unique = true, nullable = false)
     private String licensePlate;
 
@@ -32,4 +31,10 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     private VehicleType type;
 
+    @OneToMany(mappedBy = "vehicle")
+    private List<Reservation> reservations;
+
+    @OneToOne
+    @JoinColumn(name = "driver_id")
+    private Driver driver;
 }
