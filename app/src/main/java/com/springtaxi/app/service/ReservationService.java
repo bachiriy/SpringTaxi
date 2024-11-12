@@ -23,7 +23,7 @@ public class ReservationService {
 
     public ResponseObj add(Reservation reservation) {
 
-        Reservation foundReservation = repository.findByStartingAddressAndDestinationAddressAndPrice(
+        Reservation foundReservation = repository.findByPickupAddressAndDropoffAddressAndPrice(
             reservation.getPickupAddress(),
             reservation.getDropoffAddress(),
             reservation.getPrice());

@@ -2,6 +2,7 @@ package com.springtaxi.app.entity;
 
 import com.springtaxi.app.entity.enums.DriverStatut;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 
 public class Driver {
     @Id
@@ -32,9 +34,10 @@ public class Driver {
     @Enumerated(EnumType.STRING)
     private DriverStatut statut;
 
-    @OneToMany
+    @OneToMany(mappedBy = "driver")
     private List<Reservation> reservations;
 
-
+    @OneToOne(mappedBy = "driver")
+    private Vehicle vehicle;
 
 }

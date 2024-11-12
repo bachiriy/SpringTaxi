@@ -1,6 +1,8 @@
 package com.springtaxi.app.service;
 
+import com.springtaxi.app.dto.DriverDto;
 import com.springtaxi.app.entity.Driver;
+import com.springtaxi.app.mapper.DriverMapper;
 import com.springtaxi.app.repository.DriverRepository;
 import com.springtaxi.app.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +16,16 @@ import java.util.List;
 @Transactional
 public class DriverService {
     private final DriverRepository driverRepository;
+    private final DriverMapper driverMapper;
 
     @Autowired
-    public DriverService(DriverRepository driverRepository) {
+    public DriverService(DriverRepository driverRepository , DriverMapper driverMapper) {
         this.driverRepository = driverRepository;
+        this.driverMapper = driverMapper;
     }
-    public List<Driver> getAllDrivers() {
-        return driverRepository.findAll();
+    public List<DriverDto> getAllDrivers() {
+        List<Driver> drivers = driverRepository.findAll();
+        return driverMapper.toDtoList(drivers);
     }
     public Driver getDriverById(int id) {
         return driverRepository.findById(id)
