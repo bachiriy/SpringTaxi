@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
-public class DriverService {
+public class   DriverService {
     private final DriverRepository driverRepository;
 
     @Autowired
