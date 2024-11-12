@@ -52,8 +52,8 @@ public class ReservationService {
     public ResponseObj update(Reservation reservation) {
         Reservation foundReservation = getById(reservation.getId());
         int changes = 0;
-        if (reservation.getDestinationAddress() != null) {foundReservation.setDestinationAddress(reservation.getDestinationAddress()); changes++;}
-        if (reservation.getStartingAddress() != null) {foundReservation.setStartingAddress(reservation.getStartingAddress()); changes++;}
+        if (reservation.getPickupAddress() != null) {foundReservation.setPickupAddress(reservation.getPickupAddress()); changes++;}
+        if (reservation.getDropoffAddress() != null) {foundReservation.setDropoffAddress(reservation.getDropoffAddress()); changes++;}
         if (reservation.getPrice() != null) {foundReservation.setPrice(reservation.getPrice()); changes++;}
         if (reservation.getStatus() != null) {foundReservation.setStatus(reservation.getStatus()); changes++;}
         if (reservation.getDistanceKm() != null) {foundReservation.setDistanceKm(reservation.getDistanceKm()); changes++;}
