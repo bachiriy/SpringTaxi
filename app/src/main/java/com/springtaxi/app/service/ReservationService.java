@@ -24,8 +24,8 @@ public class ReservationService {
     public ResponseObj add(Reservation reservation) {
 
         Reservation foundReservation = repository.findByPickupAddressAndDropoffAddressAndPrice(
-            reservation.getPickupAddress(), 
-            reservation.getDropoffAddress(), 
+            reservation.getPickupAddress(),
+            reservation.getDropoffAddress(),
             reservation.getPrice());
 
         if (foundReservation == null) {
@@ -34,8 +34,8 @@ public class ReservationService {
         } else 
             throw new ElementAlreadyExistsException(
                 "Reservation with addresses " +
-                reservation.getPickupAddress() + ", " + 
-                reservation.getDropoffAddress() + " and the price " + 
+                reservation.getPickupAddress() + ", " +
+                reservation.getDropoffAddress() + " and the price " +
                 reservation.getPrice() + " already exists.");
     }
 
