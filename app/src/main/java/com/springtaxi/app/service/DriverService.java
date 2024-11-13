@@ -27,31 +27,36 @@ public class DriverService {
         List<Driver> drivers = driverRepository.findAll();
         return driverMapper.toDtoList(drivers);
     }
-    public Driver getDriverById(int id) {
-        return driverRepository.findById(id)
+    public DriverDto getDriverById(int id) {
+        Driver driver = driverRepository.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Driver Not Found"));
+        return driverMapper.toDto(driver);
     }
 
-    public Driver createDriver(Driver driver) {
-        if (driver == null) {
+    public DriverDto createDriver(DriverDto driverDto) {
+        if (driverDto == null) {
                 throw new IllegalArgumentException("La formation ne peut pas être nulle");
         }
-        return driverRepository.save(driver);
+        Driver driver = driverMapper.toEntity(driverDto);
+        Driver savedDriver = driverRepository.save(driver);
+        return driverMapper.toDto(savedDriver);
     }
-    public Driver updateDriver(Driver driver, int id) {
-        Driver driverExist = getDriverById(id);
+    public DriverDto updateDriver(DriverDto driverDto, int id) {
+        Driver existingDriver = driverRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Driver Not Found"));
+        existingDriver.setFirstName(driverDto.getFirstName());
+        existingDriver.setLastName(driverDto.getLastName());
+        existingDriver.setDisponibiliteDebut(driverDto.getDisponibiliteDebut());
+        existingDriver.setDisponibiliteFin(driverDto.getDisponibiliteFin());
+        existingDriver.setStatut(driverDto.getStatut());
 
-        driverExist.setFirstName(driver.getFirstName());
-        driverExist.setLastName(driver.getLastName());
-        driverExist.setDisponibiliteDebut(driver.getDisponibiliteDebut());
-        driverExist.setDisponibiliteFin(driver.getDisponibiliteFin());
-        driverExist.setStatut(driver.getStatut());
-
-        LoggerUtil.logInfo("Driver updated successfuly : " + driverExist);
-        return driverRepository.save(driverExist);
+        LoggerUtil.logInfo("Driver updated successfuly : " + existingDriver);
+        Driver updatedDriver = driverRepository.save(existingDriver);
+        return driverMapper.toDto(updatedDriver);
     }
     public void deleteDriver(int id) {
-        Driver driver = getDriverById(id);
+        Driver driver = driverRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Driver Not Found"));
         driverRepository.delete(driver);
         LoggerUtil.logInfo("Driver deleted successfuly : " + driver);
     }
