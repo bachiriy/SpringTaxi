@@ -67,10 +67,15 @@ public class VehicleService {
         existingVehicle.setStatus(vehicleDto.getStatus());
         existingVehicle.setType(vehicleDto.getType());
 
-        LoggerUtil.logInfo("Vehicle updated successfully: " + existingVehicle);
+        String vehicleInfo = "Vehicle updated successfully: id=" + existingVehicle.getId() +
+                ", model=" + existingVehicle.getModel() +
+                ", licensePlate=" + existingVehicle.getLicensePlate();
+        LoggerUtil.logInfo(vehicleInfo);
+
         Vehicle updatedVehicle = vehicleRepository.save(existingVehicle);
         return vehicleMapper.toDto(updatedVehicle);
     }
+
 
     public boolean deleteVehicle(Long id) {
         Vehicle vehicle = vehicleRepository.findById(id)
