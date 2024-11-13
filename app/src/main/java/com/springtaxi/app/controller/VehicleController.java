@@ -1,16 +1,14 @@
 package com.springtaxi.app.controller;
 
 import com.springtaxi.app.dto.VehicleDto;
-import com.springtaxi.app.entity.Vehicle;
 import com.springtaxi.app.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/vehicle")
@@ -19,42 +17,38 @@ public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
 
-    @GetMapping("/getAllVehicles")
+    @GetMapping
     public ResponseEntity<List<VehicleDto>> getAllVehicles() {
-        List<VehicleDto> vehicles = vehicleService.getAllVehicles().stream()
-                .map(VehicleDto::toDto)
-                .collect(Collectors.toList());
+        List<VehicleDto> vehicles = vehicleService.getAllVehicles();
         return ResponseEntity.ok(vehicles);
     }
 
     @GetMapping("/getVehicle/{id}")
     public ResponseEntity<VehicleDto> getVehicleById(@PathVariable Long id) {
-        Optional<Vehicle> vehicleOpt = vehicleService.getVehicleById(id);
-        return vehicleOpt.map(vehicle -> ResponseEntity.ok(VehicleDto.toDto(vehicle)))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        try {
+            VehicleDto vehicleDto = vehicleService.getVehicleById(id);
+            return ResponseEntity.ok(vehicleDto);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
-
-
-
 
     @PostMapping("/create")
-    public ResponseEntity<String> createVehicle(@RequestBody VehicleDto vehicleDto) {
-        Vehicle vehicle = vehicleDto.toEntity();
-        Vehicle savedVehicle = vehicleService.createVehicle(vehicle);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Vehicle created successfully with ID: " + savedVehicle.getId());
+    public ResponseEntity<VehicleDto> createVehicle(@RequestBody VehicleDto vehicleDto) {
+        VehicleDto savedVehicleDto = vehicleService.createVehicle(vehicleDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedVehicleDto);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<String> updateVehicle(@PathVariable Long id, @RequestBody VehicleDto vehicleDto) {
-        Vehicle vehicle = vehicleDto.toEntity();
-        Vehicle updatedVehicle = vehicleService.updateVehicle(id, vehicle);
-        if (updatedVehicle != null) {
-            return ResponseEntity.ok("Vehicle updated successfully with ID: " + updatedVehicle.getId());
+    @PutMapping("/update/{id}")
+    public ResponseEntity<VehicleDto> updateVehicle(@PathVariable Long id, @RequestBody VehicleDto vehicleDto) {
+        VehicleDto updatedVehicleDto = vehicleService.updateVehicle(vehicleDto, id);
+        if (updatedVehicleDto != null) {
+            return ResponseEntity.ok(updatedVehicleDto);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vehicle not found.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteVehicle(@PathVariable Long id) {
         boolean deleted = vehicleService.deleteVehicle(id);
         if (deleted) {
