@@ -1,5 +1,7 @@
 package com.springtaxi.app.service;
 
+import com.springtaxi.app.dao.DriverDao;
+import com.springtaxi.app.dto.DriverAnalytics;
 import com.springtaxi.app.dto.DriverDto;
 import com.springtaxi.app.entity.Driver;
 import com.springtaxi.app.mapper.DriverMapper;
@@ -17,11 +19,13 @@ import java.util.List;
 public class DriverService {
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
+    private final DriverDao driverDao;
 
     @Autowired
-    public DriverService(DriverRepository driverRepository , DriverMapper driverMapper) {
+    public DriverService(DriverRepository driverRepository , DriverMapper driverMapper , DriverDao driverDao) {
         this.driverRepository = driverRepository;
         this.driverMapper = driverMapper;
+        this.driverDao = driverDao;
     }
     public List<DriverDto> getAllDrivers() {
         List<Driver> drivers = driverRepository.findAll();
@@ -60,5 +64,10 @@ public class DriverService {
         driverRepository.delete(driver);
         LoggerUtil.logInfo("Driver deleted successfuly : " + driver);
     }
+
+    public DriverAnalytics getDriverAnalytics() {
+        return driverDao.getDriverAnalytics();
+    }
+
 
 }

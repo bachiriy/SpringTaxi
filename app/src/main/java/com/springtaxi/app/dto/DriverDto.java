@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +17,7 @@ public class DriverDto {
     private int id;
     private String firstName;
     private String lastName;
-    private LocalDate disponibiliteDebut;
-    private LocalDate disponibiliteFin;
+    private LocalDateTime disponibiliteDebut;
+    private LocalDateTime disponibiliteFin;
     private DriverStatut statut;
 }

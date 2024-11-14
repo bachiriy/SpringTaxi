@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -29,13 +30,13 @@ public class Driver {
 
     @NotBlank(message = "the last name must not be empty")
     private String lastName;
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @NotNull
-    private LocalDate disponibiliteDebut;
+    private LocalDateTime disponibiliteDebut;
 
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @NotNull
-    private LocalDate disponibiliteFin;
+    private LocalDateTime disponibiliteFin;
 
     @Enumerated(EnumType.STRING)
     private DriverStatut statut;
