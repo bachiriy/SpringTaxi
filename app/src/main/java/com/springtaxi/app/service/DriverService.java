@@ -4,6 +4,7 @@ import com.springtaxi.app.dao.DriverDao;
 import com.springtaxi.app.dto.DriverAnalytics;
 import com.springtaxi.app.dto.DriverDto;
 import com.springtaxi.app.entity.Driver;
+import com.springtaxi.app.entity.enums.DriverStatut;
 import com.springtaxi.app.mapper.DriverMapper;
 import com.springtaxi.app.repository.DriverRepository;
 import com.springtaxi.app.util.LoggerUtil;
@@ -68,6 +69,10 @@ public class DriverService {
     public DriverAnalytics getDriverAnalytics() {
         return driverDao.getDriverAnalytics();
     }
+        public List<DriverDto> getDriverByStatut(DriverStatut statut) {
+            List<Driver> drivers = driverRepository.findByStatut(statut);
+            return driverMapper.toDtoList(drivers);
+        }
 
 
 }

@@ -2,6 +2,7 @@ package com.springtaxi.app.controller;
 
 import com.springtaxi.app.dto.DriverAnalytics;
 import com.springtaxi.app.dto.DriverDto;
+import com.springtaxi.app.entity.enums.DriverStatut;
 import com.springtaxi.app.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,11 @@ public class DriverController {
     public ResponseEntity<DriverAnalytics> getAnalytics (){
         DriverAnalytics driverAnalytics = driverService.getDriverAnalytics();
         return ResponseEntity.status(HttpStatus.OK).body(driverAnalytics);
+     }
+     @GetMapping("/statut/{statut}")
+    public ResponseEntity<List<DriverDto>> getDriversByStatut(@PathVariable DriverStatut statut) {
+        List<DriverDto> drivers = driverService.getDriverByStatut(statut);
+        return ResponseEntity.status(HttpStatus.OK).body(drivers);
      }
 
 }
