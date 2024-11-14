@@ -1,5 +1,6 @@
 package com.springtaxi.app.controller;
 
+import com.springtaxi.app.dto.DriverAnalytics;
 import com.springtaxi.app.dto.DriverDto;
 import com.springtaxi.app.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +49,10 @@ public class DriverController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
      }
 
-
-
-
+     @GetMapping("/analytics")
+    public ResponseEntity<DriverAnalytics> getAnalytics (){
+        DriverAnalytics driverAnalytics = driverService.getDriverAnalytics();
+        return ResponseEntity.status(HttpStatus.OK).body(driverAnalytics);
+     }
 
 }
