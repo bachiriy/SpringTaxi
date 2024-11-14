@@ -1,12 +1,15 @@
 package com.springtaxi.app.entity;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
-import com.springtaxi.app.entity.enums.Status;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.springtaxi.app.entity.enums.ReservationStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,10 +28,14 @@ public class Reservation {
     private LocalDateTime reservationDateTime = LocalDateTime.now();
 
     @Column(name = "trip_start_time")
-    private LocalDateTime tripStartTime;
+    @NotNull(message = "Trip start time is required.")
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime tripStartTime;
 
     @Column(name = "trip_end_time")
-    private LocalDateTime tripEndTime;
+    @DateTimeFormat(pattern = "HH:mm")
+    @NotNull(message = "Trip end time is required.")
+    private LocalTime tripEndTime;
 
     @Column(name = "pickup_address")
     @NotNull(message = "Pickup address is required.")
@@ -41,19 +48,23 @@ public class Reservation {
     @NotNull(message = "Price is required.")
     private Double price;
 
-    @NotNull(message = "Status is required (CREATED, CONFIRMED, COMPLETED, CANCELED).")
-    private Status status;
+    @NotNull(message = "Status is required.")
+    @Column(name = "status", nullable = false)
+	@Enumerated(EnumType.STRING)
+    private ReservationStatus status;
 
     @Column(name = "distance_km")
     @NotNull(message = "Distance in kilometers is required.")
     @Max(100)
     private Double distanceKm;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "driver_id")
+    @NotNull(message = "Must be assosiated with a driver.")
     private Driver driver;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicle_id")
+    @NotNull(message = "Must be assosiated with a veicle.")
     private Vehicle vehicle;
 }

@@ -4,4 +4,4 @@ spring:
       jdbc-url: jdbc:h2:~/springtaxi
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update

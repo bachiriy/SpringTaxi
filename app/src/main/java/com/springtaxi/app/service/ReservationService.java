@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.springtaxi.app.dto.ReservationDto;
 import com.springtaxi.app.entity.Reservation;
+import com.springtaxi.app.entity.enums.DriverStatut;
 import com.springtaxi.app.exception.ElementNotFoundException;
 import com.springtaxi.app.exception.ElementAlreadyExistsException;
 import com.springtaxi.app.repository.ReservationRepository;
@@ -17,20 +19,23 @@ public class ReservationService {
     @Autowired private ReservationRepository repository;
 
 
-    public List<Reservation> getAll(){
+    public List<Reservation> getAll() {
+
         return repository.findAll();
     }
 
-    public ResponseObj add(Reservation reservation) {
-
+    public ResponseObj add(Reservation reservation) {        
         Reservation foundReservation = repository.findByPickupAddressAndDropoffAddressAndPrice(
             reservation.getPickupAddress(),
             reservation.getDropoffAddress(),
             reservation.getPrice());
 
         if (foundReservation == null) {
-            repository.save(reservation);
-            return new ResponseObj(HttpStatus.CREATED.value(), "Reservation created.");
+            if (reservation.getDriver().getStatut().toString().equals(DriverStatut.AVAILABLE.toString())) {
+                repository.save(reservation);
+                return new ResponseObj(HttpStatus.CREATED.value(), "Reservation created.");
+            } else throw new ElementNotFoundException("Driver's not available at the moment.");
+            
         } else 
             throw new ElementAlreadyExistsException(
                 "Reservation with addresses " +
@@ -57,6 +62,14 @@ public class ReservationService {
         if (reservation.getPrice() != null) {foundReservation.setPrice(reservation.getPrice()); changes++;}
         if (reservation.getStatus() != null) {foundReservation.setStatus(reservation.getStatus()); changes++;}
         if (reservation.getDistanceKm() != null) {foundReservation.setDistanceKm(reservation.getDistanceKm()); changes++;}
+        if (reservation.getVehicle() != null) {foundReservation.setVehicle(reservation.getVehicle()); changes++;}
+        if (reservation.getDriver() != null) {
+            if (reservation.getDriver().getStatut().toString().equalsIgnoreCase(DriverStatut.AVAILABLE.toString())) {
+                foundReservation.setDriver(reservation.getDriver());
+                changes++;
+            } else throw new ElementNotFoundException("Driver's not available at the moment.");
+        }
+
         repository.save(foundReservation);
         return new ResponseObj(HttpStatus.OK.value(), "Reservation updated with("+ changes+ ") changes.");
     }

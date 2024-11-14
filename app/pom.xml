@@ -81,7 +81,8 @@
 				<configuration>
 					<image>
 						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
-					</image>
+					</image>origin/ST-34-Vehicle-Management
+
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
