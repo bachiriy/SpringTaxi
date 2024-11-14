@@ -1,5 +1,6 @@
 package com.springtaxi.app.service;
 
+import com.springtaxi.app.dao.VehicleDao;
 import com.springtaxi.app.dto.VehicleDto;
 import com.springtaxi.app.entity.Driver;
 import com.springtaxi.app.entity.Vehicle;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -22,11 +25,14 @@ public class VehicleService {
     private final VehicleMapper vehicleMapper;
     private final DriverRepository driverRepository;
 
+    private final VehicleDao vehicleDao;
+
     @Autowired
-    public VehicleService(VehicleRepository vehicleRepository, VehicleMapper vehicleMapper , DriverRepository driverRepository) {
+    public VehicleService(VehicleRepository vehicleRepository, VehicleMapper vehicleMapper , DriverRepository driverRepository, VehicleDao vehicleDao) {
         this.vehicleRepository = vehicleRepository;
         this.vehicleMapper = vehicleMapper;
         this.driverRepository =driverRepository;
+        this.vehicleDao = vehicleDao;
     }
 
     public List<VehicleDto> getAllVehicles() {
@@ -83,5 +89,15 @@ public class VehicleService {
         vehicleRepository.delete(vehicle);
         LoggerUtil.logInfo("Vehicle deleted successfully: " + vehicle);
         return true;
+    }
+
+    public Map<String, Object> getVehicleStatistics() {
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("averageMileageByType", vehicleDao.calculateAverageMileageByType());
+        response.put("fleetStatus", vehicleDao.calculateFleetStatus());
+        response.put("usageRateByType", vehicleDao.calculateUsageRateByType());
+
+        return response;
     }
 }

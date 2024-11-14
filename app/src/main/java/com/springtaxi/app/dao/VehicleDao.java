@@ -34,6 +34,27 @@ public class VehicleDao {
         return result;
     }
 
+
+    /*
+     * Calculer le taux d'utilisation par type de véhicule (pourcentage du temps où les véhicules sont EN_COURSE)
+     */
+    public Map<String, Double> calculateUsageRateByType() {
+        String jpql = "SELECT v.type, SUM(CASE WHEN v.status = :status THEN 1 ELSE 0 END) / COUNT(v) * 100 FROM Vehicle v GROUP BY v.type";
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter("status", VehicleStatus.IN_SERVICE); // Assuming "EN_COURSE" corresponds to "IN_SERVICE" in your enum
+
+        List<Object[]> resultList = query.getResultList();
+        Map<String, Double> result = new HashMap<>();
+
+        for (Object[] resultRow : resultList) {
+            VehicleType type = (VehicleType) resultRow[0];
+            Double usageRate = (Double) resultRow[1];
+            result.put(type.name(), usageRate);
+        }
+
+        return result;
+    }
+
     /*
      *Calculer l'état de la flotte (nombre de véhicules par statut)
      *
@@ -52,4 +73,7 @@ public class VehicleDao {
         }
         return result;
     }
+
+
+
 }
