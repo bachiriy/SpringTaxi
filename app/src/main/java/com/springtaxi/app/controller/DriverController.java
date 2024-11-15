@@ -2,14 +2,18 @@ package com.springtaxi.app.controller;
 
 import com.springtaxi.app.dto.DriverAnalytics;
 import com.springtaxi.app.dto.DriverDto;
+import com.springtaxi.app.entity.Driver;
 import com.springtaxi.app.entity.enums.DriverStatut;
 import com.springtaxi.app.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -60,5 +64,14 @@ public class DriverController {
         List<DriverDto> drivers = driverService.getDriverByStatut(statut);
         return ResponseEntity.status(HttpStatus.OK).body(drivers);
      }
+
+    @GetMapping("/available")
+    public ResponseEntity<Page<DriverDto>> getAvailable(
+            @RequestParam String date,  // Format: "2024-11-24 08:30:00"
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<DriverDto> driverPage = driverService.getDriversByDate(date, page, size);
+        return  ResponseEntity.status(HttpStatus.OK).body(driverPage);
+    }
 
 }

@@ -9,10 +9,14 @@ import com.springtaxi.app.mapper.DriverMapper;
 import com.springtaxi.app.repository.DriverRepository;
 import com.springtaxi.app.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -69,10 +73,18 @@ public class DriverService {
     public DriverAnalytics getDriverAnalytics() {
         return driverDao.getDriverAnalytics();
     }
-        public List<DriverDto> getDriverByStatut(DriverStatut statut) {
-            List<Driver> drivers = driverRepository.findByStatut(statut);
-            return driverMapper.toDtoList(drivers);
-        }
 
+    public List<DriverDto> getDriverByStatut(DriverStatut statut) {
+        List<Driver> drivers = driverRepository.findByStatut(statut);
+        return driverMapper.toDtoList(drivers);
+    }
+
+    public Page<DriverDto> getDriversByDate(String date, int page, int size) {
+        LocalDateTime dateTime = LocalDateTime.parse(date.replace(" ", "T"));
+        LocalDateTime startOfDay = dateTime.toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1);
+        Page<Driver> drivers = driverRepository.findAvailableDriversByDate(startOfDay, endOfDay, PageRequest.of(page, size));
+        return drivers.map(driverMapper::toDto);
+    }
 
 }
