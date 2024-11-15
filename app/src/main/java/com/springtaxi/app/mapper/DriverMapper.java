@@ -4,7 +4,6 @@ import com.springtaxi.app.dto.DriverDto;
 import com.springtaxi.app.entity.Driver;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
