@@ -3,8 +3,10 @@ package com.springtaxi.app.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -13,16 +15,12 @@ import javax.persistence.*;
 @Table(name = "vehicle")
 public class Vehicle {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String model;
 
-
-    
     @Column(unique = true, nullable = false)
     private String licensePlate;
 
@@ -34,4 +32,10 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     private VehicleType type;
 
+    @OneToMany(mappedBy = "vehicle")
+    private List<Reservation> reservations;
+
+    @OneToOne
+    @JoinColumn(name = "driver_id")
+    private Driver driver;
 }

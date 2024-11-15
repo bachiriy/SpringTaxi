@@ -30,7 +30,7 @@ public class ReservationController {
     }
     
     @GetMapping("/{id}")
-    public Reservation getReservation(@Valid @PathVariable("id") Long id){
+    public Reservation getReservation(@PathVariable("id") Long id){
         return service.getById(id);
     }
     
@@ -45,7 +45,7 @@ public class ReservationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseObj update(Reservation reservation) {
+    public ResponseObj update(@ModelAttribute Reservation reservation) {
         return service.update(reservation);
     }
     
