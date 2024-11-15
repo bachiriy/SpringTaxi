@@ -39,7 +39,7 @@ public class VehicleService {
     }
 
     public List<VehicleDto> getAllVehicles(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size); // Page est 0-indexée
+        Pageable pageable = PageRequest.of(page - 1, size);
         Page<Vehicle> vehiclesPage = vehicleRepository.findAll(pageable);
         List<Vehicle> vehicles = vehiclesPage.getContent();
         return vehicleMapper.toDtoList(vehicles);
@@ -104,5 +104,10 @@ public class VehicleService {
         response.put("usageRateByType", vehicleDao.calculateUsageRateByType());
 
         return response;
+    }
+
+    public List<VehicleDto> findByModel(String model) {
+        List<Vehicle> vehicles = vehicleRepository.findByModel(model);
+        return vehicleMapper.toDtoList(vehicles);
     }
 }

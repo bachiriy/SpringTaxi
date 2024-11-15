@@ -66,4 +66,9 @@ public class VehicleController {
     public Map<String, Object> getVehicleStatistics() {
         return vehicleService.getVehicleStatistics();
     }
+
+    @GetMapping("/search")
+    public List<VehicleDto> searchByModel(@RequestParam String model) {
+        return vehicleService.findByModel(model);
+    }
 }
