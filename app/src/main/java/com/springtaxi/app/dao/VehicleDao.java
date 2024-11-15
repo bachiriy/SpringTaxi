@@ -48,12 +48,14 @@ public class VehicleDao {
 
         for (Object[] resultRow : resultList) {
             VehicleType type = (VehicleType) resultRow[0];
-            Double usageRate = (Double) resultRow[1];
+            // Ensure that we safely cast the result to a Double
+            Double usageRate = ((Number) resultRow[1]).doubleValue();  // This ensures the value is treated as a Double
             result.put(type.name(), usageRate);
         }
 
         return result;
     }
+
 
     /*
      *Calculer l'état de la flotte (nombre de véhicules par statut)

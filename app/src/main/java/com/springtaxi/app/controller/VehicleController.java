@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/vehicle")
@@ -56,5 +57,10 @@ public class VehicleController {
             return ResponseEntity.ok("Vehicle deleted successfully.");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vehicle not found.");
+    }
+
+    @GetMapping("/statistics")
+    public Map<String, Object> getVehicleStatistics() {
+        return vehicleService.getVehicleStatistics();
     }
 }
