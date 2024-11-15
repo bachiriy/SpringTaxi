@@ -9,6 +9,9 @@ import com.springtaxi.app.repository.DriverRepository;
 import com.springtaxi.app.repository.VehicleRepository;
 import com.springtaxi.app.util.LoggerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,11 +38,12 @@ public class VehicleService {
         this.vehicleDao = vehicleDao;
     }
 
-    public List<VehicleDto> getAllVehicles() {
-        List<Vehicle> vehicles = vehicleRepository.findAll();
+    public List<VehicleDto> getAllVehicles(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size); // Page est 0-indexée
+        Page<Vehicle> vehiclesPage = vehicleRepository.findAll(pageable);
+        List<Vehicle> vehicles = vehiclesPage.getContent();
         return vehicleMapper.toDtoList(vehicles);
     }
-
     public VehicleDto getVehicleById(Long id) {
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle Not Found"));
@@ -87,7 +91,8 @@ public class VehicleService {
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Vehicle Not Found"));
         vehicleRepository.delete(vehicle);
-        LoggerUtil.logInfo("Vehicle deleted successfully: " + vehicle);
+
+        LoggerUtil.logInfo("Vehicle deleted successfully with ID: " + id);
         return true;
     }
 

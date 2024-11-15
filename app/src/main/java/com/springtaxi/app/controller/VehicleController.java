@@ -19,10 +19,13 @@ public class VehicleController {
     private VehicleService vehicleService;
 
     @GetMapping
-    public ResponseEntity<List<VehicleDto>> getAllVehicles() {
-        List<VehicleDto> vehicles = vehicleService.getAllVehicles();
+    public ResponseEntity<List<VehicleDto>> getAllVehicles(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "4") int size) {
+        List<VehicleDto> vehicles = vehicleService.getAllVehicles(page, size);
         return ResponseEntity.ok(vehicles);
     }
+
 
     @GetMapping("/getVehicle/{id}")
     public ResponseEntity<VehicleDto> getVehicleById(@PathVariable Long id) {
