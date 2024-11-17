@@ -85,8 +85,6 @@ public class ReservationService {
     }
 
     public HashMap<String, Object> analytics() {
-        // Reservation foundReservation = getById(id);
-        // Object avgPricePerKm = dao.getAvgPricePerKm();
-        return new HashMap<String, Object>(); // {{ put("avg_price_per_km", avgPricePerKm);}}
+        return dao.getAllAnalytics(getAll());
     }
 }

@@ -11,7 +11,7 @@ import com.springtaxi.app.entity.Reservation;
 import com.springtaxi.app.entity.Vehicle;
 
 
-@Mapper(componentModel = "spring", imports = {Driver.class, Vehicle.class})
+// @Mapper(componentModel = "spring", imports = {Driver.class, Vehicle.class})
 @Component
 public interface ReservationMapper {
     // ReservationMapper INSTANCE = Mappers.getMapper(ReservationMapper.class);

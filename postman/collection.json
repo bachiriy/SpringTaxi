@@ -1,0 +1,37 @@
+{
+	"info": {
+		"_postman_id": "325dd089-edd1-4bff-a867-8025481cd562",
+		"name": "SpringTaxi Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33107123"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/chauffeurs",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/chauffeurs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"chauffeurs"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
