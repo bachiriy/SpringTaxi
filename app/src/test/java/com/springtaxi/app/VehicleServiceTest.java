@@ -1,104 +1,152 @@
 package com.springtaxi.app;
 
+import com.springtaxi.app.dto.VehicleDto;
+import com.springtaxi.app.entity.Driver;
 import com.springtaxi.app.entity.Vehicle;
 import com.springtaxi.app.entity.VehicleStatus;
 import com.springtaxi.app.entity.VehicleType;
+import com.springtaxi.app.entity.enums.Status;
+import com.springtaxi.app.mapper.VehicleMapper;
+import com.springtaxi.app.repository.DriverRepository;
 import com.springtaxi.app.repository.VehicleRepository;
 import com.springtaxi.app.service.VehicleService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-public class VehicleServiceTest {
+@ExtendWith(SpringExtension.class)
+class VehicleServiceTest {
 
     @Mock
     private VehicleRepository vehicleRepository;
 
+    @Mock
+    private VehicleMapper vehicleMapper;
+
+    @Mock
+    private DriverRepository driverRepository;
+
     @InjectMocks
     private VehicleService vehicleService;
 
+    private VehicleDto vehicleDto;
     private Vehicle vehicle;
+    private Driver driver;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
+        // Initialize mock objects
+        driver = new Driver();
+        driver.setId(1);
+
+        vehicleDto = new VehicleDto();
+        vehicleDto.setModel("Tesla");
+        vehicleDto.setLicensePlate("1234XYZ");
+        vehicleDto.setMileage(1000);
+        vehicleDto.setStatus(VehicleStatus.IN_SERVICE);
+        vehicleDto.setType(VehicleType.BERLINE);
+        vehicleDto.setDriverId(1L);
+
         vehicle = new Vehicle();
         vehicle.setId(1L);
-        vehicle.setModel("Toyota Prius");
-        vehicle.setLicensePlate("XYZ-1234");
-        vehicle.setMileage(15000);
-        vehicle.setStatus(VehicleStatus.AVAILABLE);
+        vehicle.setModel("Tesla");
+        vehicle.setLicensePlate("1234XYZ");
+        vehicle.setMileage(1000);
+        vehicle.setStatus(VehicleStatus.IN_SERVICE);
         vehicle.setType(VehicleType.BERLINE);
+        vehicle.setDriver(driver);
     }
 
     @Test
-    public void testCreateVehicle() {
-        when(vehicleRepository.save(Mockito.any(Vehicle.class))).thenReturn(vehicle);
+    void testCreateVehicle() {
+        when(driverRepository.findById(1)).thenReturn(Optional.of(driver));
+        when(vehicleMapper.toEntity(vehicleDto)).thenReturn(vehicle);
+        when(vehicleRepository.save(vehicle)).thenReturn(vehicle);
+        when(vehicleMapper.toDto(vehicle)).thenReturn(vehicleDto);
 
-        Vehicle createdVehicle = vehicleService.createVehicle(vehicle);
+        VehicleDto result = vehicleService.createVehicle(vehicleDto);
 
-        assertNotNull(createdVehicle);
-        assertEquals(vehicle.getId(), createdVehicle.getId());
+        assertNotNull(result);
+        assertEquals(vehicleDto.getModel(), result.getModel());
+        assertEquals(vehicleDto.getLicensePlate(), result.getLicensePlate());
         verify(vehicleRepository, times(1)).save(vehicle);
     }
 
     @Test
-    public void testGetVehicleById() {
+    void testCreateVehicleWithNullDriverId() {
+        vehicleDto.setDriverId(null);
 
-        when(vehicleRepository.findById(1L)).thenReturn(Optional.of(vehicle));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            vehicleService.createVehicle(vehicleDto);
+        });
 
-        Optional<Vehicle> foundVehicle = vehicleService.getVehicleById(1L);
-
-        assertTrue(foundVehicle.isPresent());
-        assertEquals(vehicle.getId(), foundVehicle.get().getId());
-        verify(vehicleRepository, times(1)).findById(1L);
+        assertEquals("Driver ID cannot be null", exception.getMessage());
     }
 
     @Test
-    public void testUpdateVehicle() {
+    void testUpdateVehicle() {
+        when(vehicleRepository.findById(1L)).thenReturn(Optional.of(vehicle));
+        when(vehicleRepository.save(vehicle)).thenReturn(vehicle);
+        when(vehicleMapper.toDto(vehicle)).thenReturn(vehicleDto);
 
-        Vehicle updatedVehicle = new Vehicle();
-        updatedVehicle.setId(1L);
-        updatedVehicle.setModel("Toyota Camry");
-
-        when(vehicleRepository.existsById(1L)).thenReturn(true);
-        when(vehicleRepository.save(Mockito.any(Vehicle.class))).thenReturn(updatedVehicle);
-
-        Vehicle result = vehicleService.updateVehicle(1L, updatedVehicle);
+        VehicleDto result = vehicleService.updateVehicle(vehicleDto, 1L);
 
         assertNotNull(result);
-        assertEquals("Toyota Camry", result.getModel());
-        verify(vehicleRepository, times(1)).existsById(1L);
-        verify(vehicleRepository, times(1)).save(updatedVehicle);
+        assertEquals(vehicleDto.getModel(), result.getModel());
+        assertEquals(vehicleDto.getLicensePlate(), result.getLicensePlate());
+        verify(vehicleRepository, times(1)).save(vehicle);
     }
 
     @Test
-    public void testDeleteVehicle() {
+    void testGetVehicleById() {
+        when(vehicleRepository.findById(1L)).thenReturn(Optional.of(vehicle));
+        when(vehicleMapper.toDto(vehicle)).thenReturn(vehicleDto);
 
-        when(vehicleRepository.existsById(1L)).thenReturn(true);
+        VehicleDto result = vehicleService.getVehicleById(1L);
 
-        boolean isDeleted = vehicleService.deleteVehicle(1L);
-
-        assertTrue(isDeleted);
-        verify(vehicleRepository, times(1)).deleteById(1L);
+        assertNotNull(result);
+        assertEquals(vehicleDto.getModel(), result.getModel());
+        assertEquals(vehicleDto.getLicensePlate(), result.getLicensePlate());
     }
 
     @Test
-    public void testDeleteVehicle_NotFound() {
+    void testGetVehicleByIdNotFound() {
+        when(vehicleRepository.findById(1L)).thenReturn(Optional.empty());
 
-        when(vehicleRepository.existsById(1L)).thenReturn(false);
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            vehicleService.getVehicleById(1L);
+        });
 
-        boolean isDeleted = vehicleService.deleteVehicle(1L);
+        assertEquals("Vehicle Not Found", exception.getMessage());
+    }
 
-        assertFalse(isDeleted);
-        verify(vehicleRepository, times(0)).deleteById(1L);
+    @Test
+    void testDeleteVehicle() {
+        when(vehicleRepository.findById(1L)).thenReturn(Optional.of(vehicle));
+
+        boolean result = vehicleService.deleteVehicle(1L);
+
+        assertTrue(result);
+        verify(vehicleRepository, times(1)).delete(vehicle);
+    }
+
+    @Test
+    void testDeleteVehicleNotFound() {
+        when(vehicleRepository.findById(1L)).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            vehicleService.deleteVehicle(1L);
+        });
+
+        assertEquals("Vehicle Not Found", exception.getMessage());
     }
 }

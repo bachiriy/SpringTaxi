@@ -14,6 +14,5 @@ public interface DriverMapper {
     @Mapping(target = "reservations", ignore = true)
     @Mapping(target = "vehicle", ignore = true)
     Driver toEntity(DriverDto driverDto);
-
     List<DriverDto> toDtoList(List<Driver> drivers);
 }
