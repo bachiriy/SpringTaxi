@@ -23,9 +23,9 @@ public class ReservationService {
 
     public ResponseObj add(Reservation reservation) {
 
-        Reservation foundReservation = repository.findByStartingAddressAndDestinationAddressAndPrice(
-            reservation.getStartingAddress(), 
-            reservation.getDestinationAddress(), 
+        Reservation foundReservation = repository.findByPickupAddressAndDropoffAddressAndPrice(
+            reservation.getPickupAddress(),
+            reservation.getDropoffAddress(),
             reservation.getPrice());
 
         if (foundReservation == null) {
@@ -34,8 +34,8 @@ public class ReservationService {
         } else 
             throw new ElementAlreadyExistsException(
                 "Reservation with addresses " +
-                reservation.getStartingAddress() + ", " + 
-                reservation.getDestinationAddress() + " and the price " + 
+                reservation.getPickupAddress() + ", " +
+                reservation.getDropoffAddress() + " and the price " +
                 reservation.getPrice() + " already exists.");
     }
 
@@ -51,12 +51,13 @@ public class ReservationService {
 
     public ResponseObj update(Reservation reservation) {
         Reservation foundReservation = getById(reservation.getId());
-        if (!reservation.getDestinationAddress().isEmpty()) foundReservation.setDestinationAddress(reservation.getDestinationAddress());
-        if (!reservation.getStartingAddress().isEmpty()) foundReservation.setStartingAddress(reservation.getStartingAddress());
-        if (reservation.getPrice() != null) foundReservation.setPrice(reservation.getPrice());
-        if (reservation.getStatus() != null) foundReservation.setStatus(reservation.getStatus());
-        if (reservation.getDistanceKm() != null) foundReservation.setDistanceKm(reservation.getDistanceKm());
+        int changes = 0;
+        if (reservation.getPickupAddress() != null) {foundReservation.setPickupAddress(reservation.getPickupAddress()); changes++;}
+        if (reservation.getDropoffAddress() != null) {foundReservation.setDropoffAddress(reservation.getDropoffAddress()); changes++;}
+        if (reservation.getPrice() != null) {foundReservation.setPrice(reservation.getPrice()); changes++;}
+        if (reservation.getStatus() != null) {foundReservation.setStatus(reservation.getStatus()); changes++;}
+        if (reservation.getDistanceKm() != null) {foundReservation.setDistanceKm(reservation.getDistanceKm()); changes++;}
         repository.save(foundReservation);
-        return new ResponseObj(HttpStatus.OK.value(), "Reservation updated.");
+        return new ResponseObj(HttpStatus.OK.value(), "Reservation updated with("+ changes+ ") changes.");
     }
 }
