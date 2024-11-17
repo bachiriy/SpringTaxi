@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.springtaxi.app.dao.ReservationDao;
 // import com.springtaxi.app.dto.ReservationDto;
 import com.springtaxi.app.entity.Reservation;
@@ -14,8 +15,10 @@ import com.springtaxi.app.exception.ElementAlreadyExistsException;
 import com.springtaxi.app.repository.ReservationRepository;
 import com.springtaxi.app.util.ResponseObj;
 
+import java.util.HashMap;
 import java.util.List;
 // import java.util.stream.Collectors;
+import java.util.Map;
 
 @Service
 public class ReservationService {
@@ -81,8 +84,9 @@ public class ReservationService {
         return new ResponseObj(HttpStatus.OK.value(), "Reservation updated with("+ changes+ ") changes.");
     }
 
-    public ResponseObj analytics(Long id) {
-        Reservation foundReservation = getById(id);
-        return dao.getAnalyticsOfReservation(id);
+    public HashMap<String, Object> analytics() {
+        // Reservation foundReservation = getById(id);
+        // Object avgPricePerKm = dao.getAvgPricePerKm();
+        return new HashMap<String, Object>(); // {{ put("avg_price_per_km", avgPricePerKm);}}
     }
 }

@@ -1,6 +1,7 @@
 package com.springtaxi.app.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -50,9 +51,9 @@ public class ReservationController {
         return service.update(reservation);
     }
 
-    @GetMapping("/{id}/analytics")
-    public ResponseObj getAnalytics(@PathVariable("id") Long id) {
-        return service.analytics(id);
+    @GetMapping("/analytics")
+    public Map<String, Object> getAnalytics() {
+        return service.analytics();
     } 
 
 }

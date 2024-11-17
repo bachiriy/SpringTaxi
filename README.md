@@ -133,3 +133,9 @@ Base path: `/api/vehicles`
    ```bash
    git clone <repository_url>
    cd SpringTaxi
+
+## **Swagger Api Docs**
+    ```bash
+    http://localhost:8080/swagger-ui/
+    ```
+---
