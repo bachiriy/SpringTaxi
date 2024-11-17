@@ -5,7 +5,7 @@ import com.springtaxi.app.entity.Driver;
 import com.springtaxi.app.entity.Vehicle;
 import com.springtaxi.app.entity.VehicleStatus;
 import com.springtaxi.app.entity.VehicleType;
-import com.springtaxi.app.entity.enums.Status;
+// import com.springtaxi.app.entity.enums.Status;
 import com.springtaxi.app.mapper.VehicleMapper;
 import com.springtaxi.app.repository.DriverRepository;
 import com.springtaxi.app.repository.VehicleRepository;

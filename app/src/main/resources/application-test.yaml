@@ -1,8 +1,0 @@
-spring:
-  profiles: test
-  datasource:
-    hikari:
-      jdbc-url: jdbc:h2:~/springtaxi
-  jpa:
-    hibernate:
-      ddl-auto: create-drop

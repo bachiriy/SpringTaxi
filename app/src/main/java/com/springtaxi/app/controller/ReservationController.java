@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springtaxi.app.dto.ReservationDto;
+// import com.springtaxi.app.dto.ReservationDto;
 import com.springtaxi.app.entity.Reservation;
 import com.springtaxi.app.service.ReservationService;
 import com.springtaxi.app.util.ResponseObj;
@@ -26,7 +26,7 @@ public class ReservationController {
     @Autowired private ReservationService service;
 
     @GetMapping()
-    public List<ReservationDto> getReservations() {
+    public List<Reservation> getReservations() {
         return service.getAll();
     }
     

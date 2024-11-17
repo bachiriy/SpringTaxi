@@ -38,4 +38,8 @@ public class Vehicle {
     @OneToOne
     @JoinColumn(name = "driver_id")
     private Driver driver;
+
+    public String toString(){
+        return String.format("vehicle(id: %d, model: %s)", id, model);
+    }
 }

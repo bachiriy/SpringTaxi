@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springtaxi.app.entity.enums.ReservationStatus;
 
 import lombok.AllArgsConstructor;
@@ -61,10 +62,12 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "driver_id")
     @NotNull(message = "Must be assosiated with a driver.")
+    @JsonIgnore
     private Driver driver;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicle_id")
     @NotNull(message = "Must be assosiated with a veicle.")
+    @JsonIgnore
     private Vehicle vehicle;
 }

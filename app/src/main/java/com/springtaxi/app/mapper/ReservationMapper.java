@@ -2,23 +2,21 @@ package com.springtaxi.app.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
 import com.springtaxi.app.dto.ReservationDto;
+import com.springtaxi.app.entity.Driver;
 import com.springtaxi.app.entity.Reservation;
+import com.springtaxi.app.entity.Vehicle;
 
 
-@Mapper(componentModel = "spring", uses = {DriverMapper.class})
+@Mapper(componentModel = "spring", imports = {Driver.class, Vehicle.class})
+@Component
 public interface ReservationMapper {
-   @Mapping(target = "vehicle.reservations", ignore = true)
-   ReservationDto toDto(Reservation reservation);
-}
+    ReservationMapper INSTANCE = Mappers.getMapper(ReservationMapper.class);
 
-// public List<ReservationDto> getAllDto(List<Reservation> reservations){
-//     if (this.modelMapper.getTypeMap(Reservation.class, ReservationDto.class) == null) {
-//         TypeMap<Reservation, ReservationDto> propretyMaper = this.modelMapper.createTypeMap(Reservation.class, ReservationDto.class);
-//         propretyMaper.addMappings(
-//             mapper -> mapper.map(src -> src.getDriver().toString(), ReservationDto::setDriver)
-//         );
-//     }
-//     return reservations.stream().map(l -> this.modelMapper.map(l, ReservationDto.class)).collect(Collectors.toList());
-// }
+    @Mapping(target = "driver", expression = "java(reservation.getDriver.toString())")
+    @Mapping(target = "vehicle", expression = "java(reservation.getVehicle.toString())")
+    ReservationDto toDto(Reservation reservation);
+}

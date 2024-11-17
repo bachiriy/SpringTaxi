@@ -47,4 +47,8 @@ public class Driver {
     @OneToOne(mappedBy = "driver")
     private Vehicle vehicle;
 
+    public String toString(){
+        return String.format("driver(id: %d, full name: %s %s)", id, firstName, lastName);
+    }
+
 }

@@ -9,12 +9,13 @@ import com.springtaxi.app.dao.ReservationDao;
 import com.springtaxi.app.entity.Reservation;
 import com.springtaxi.app.entity.enums.DriverStatut;
 import com.springtaxi.app.exception.ElementNotFoundException;
-// import com.springtaxi.app.mapper.ReservationMapper;
+import com.springtaxi.app.mapper.ReservationMapper;
 import com.springtaxi.app.exception.ElementAlreadyExistsException;
 import com.springtaxi.app.repository.ReservationRepository;
 import com.springtaxi.app.util.ResponseObj;
 
 import java.util.List;
+// import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -25,8 +26,9 @@ public class ReservationService {
 
 
     public List<Reservation> getAll() {
-        return repository.findAll();
-        // return mapper.getAllDto(repository.findAll());
+        List<Reservation> reservations = repository.findAll();
+        // return reservations.stream().map(mapper::toDto).collect(Collectors.toList());
+        return reservations;
     }
 
     public ResponseObj add(Reservation reservation) {        
