@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.springtaxi.app.dto.ReservationDto;
+import com.springtaxi.app.dao.ReservationDao;
+// import com.springtaxi.app.dto.ReservationDto;
 import com.springtaxi.app.entity.Reservation;
 import com.springtaxi.app.entity.enums.DriverStatut;
 import com.springtaxi.app.exception.ElementNotFoundException;
+// import com.springtaxi.app.mapper.ReservationMapper;
 import com.springtaxi.app.exception.ElementAlreadyExistsException;
 import com.springtaxi.app.repository.ReservationRepository;
 import com.springtaxi.app.util.ResponseObj;
@@ -17,11 +19,14 @@ import java.util.List;
 @Service
 public class ReservationService {
     @Autowired private ReservationRepository repository;
+    @Autowired private ReservationDao dao;
+    // @Autowired private ReservationMapper mapper;
+        
 
 
     public List<Reservation> getAll() {
-
         return repository.findAll();
+        // return mapper.getAllDto(repository.findAll());
     }
 
     public ResponseObj add(Reservation reservation) {        
@@ -72,5 +77,10 @@ public class ReservationService {
 
         repository.save(foundReservation);
         return new ResponseObj(HttpStatus.OK.value(), "Reservation updated with("+ changes+ ") changes.");
+    }
+
+    public ResponseObj analytics(Long id) {
+        Reservation foundReservation = getById(id);
+        return dao.getAnalyticsOfReservation(id);
     }
 }

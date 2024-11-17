@@ -26,10 +26,4 @@ public class ReservationDto {
     private Double distanceKm;
     private Object driver;
     private Object vehicle;
-
-    // public Reservation toReservation(){
-    //     Reservation reservation = new Reservation();
-    //     this.driver = reservation;
-    //     return new Reservation();
-    // }
 }
