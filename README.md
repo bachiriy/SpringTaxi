@@ -136,6 +136,5 @@ Base path: `/api/vehicles`
    ```
 
 ## **Swagger Api Docs**
-    ```bash
     http://localhost:8080/swagger-ui
 ---
