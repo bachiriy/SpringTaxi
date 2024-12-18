@@ -131,7 +131,7 @@ Base path: `/api/vehicles`
 
 1. Clone the repository:
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/bachiriy/SpringTaxi
    cd SpringTaxi
    ```
 
