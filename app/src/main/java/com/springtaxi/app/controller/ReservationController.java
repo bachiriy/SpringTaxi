@@ -2,6 +2,8 @@ package com.springtaxi.app.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -54,6 +56,11 @@ public class ReservationController {
     @GetMapping("/analytics")
     public Map<String, Object> getAnalytics() {
         return service.analytics();
+    } 
+
+    @GetMapping("/bagages")
+    public List<Reservation> getBagages() {
+        return service.getAll().stream().filter(r -> r.getBagagesVolumineux() != 0).collect(Collectors.toList());
     } 
 
 }

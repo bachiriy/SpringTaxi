@@ -5,7 +5,9 @@ import java.time.LocalTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -70,4 +72,9 @@ public class Reservation {
     @NotNull(message = "Must be assosiated with a veicle.")
     @JsonIgnore
     private Vehicle vehicle;
+
+    @Min(0)
+    @Max(value = 3, message = "Maximum 3 bagages valumnerux par reservation")
+    @Column(name = "bagages_volumineux")
+    private int bagagesVolumineux;
 }
